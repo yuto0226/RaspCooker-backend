@@ -20,8 +20,8 @@ users = {
 secret_key = os.environ.get('SECRET_KEY', 'ttussc')
 
 
-def token_required(f, role=""):
-    def valid_auth(*args, **kwargs):
+def token_required(f):
+    def valid_jwt_token(*args, **kwargs):
         token = request.headers.get('Authorization')
 
         if not token:
@@ -33,14 +33,10 @@ def token_required(f, role=""):
                 secret_key,
                 algorithms=["HS256"]
             )
-        except:
+        except jwt.ExpiredSignatureError:
+            return jsonify({'message': 'Token expired!'}), 401
+        except jwt.InvalidTokenError:
             return jsonify({'message': 'Invalid token!'}), 401
 
-        if datetime.fromtimestamp(data.get('exp'), tz=timezone.utc) < datetime.now(timezone.utc):
-            return jsonify({'message': 'Token expired!'}), 401
-
-        if role != "" and data.get('role') != role:
-            return jsonify({'message': 'Role not authorized!'}), 403
-
         return f(*args, **kwargs)
-    return valid_auth
+    return valid_jwt_token

@@ -16,5 +16,8 @@ env
 env_linux
 .venv
 
+# uploads
+uploads/
+
 # other
 .DS_Store
