@@ -1,13 +1,12 @@
 import os
 import uuid
 from datetime import datetime
-from flask import jsonify, request
-from app.task import blueprint, tasks, add_task, TaskState, Task, update_task_state
+from flask import jsonify
+from app.task import blueprint, tasks, add_task, TaskState, Task
 from app.auth import token_required
 from app.file import uploads_dir
-from typing import Dict
 
-def initialize_task(file_name: str, file_path: str) -> Task:
+def initialize_task(file_path: str) -> Task:
     """初始化任務並加入全域任務列表"""
     task_uuid = str(uuid.uuid4())
     task = Task(
