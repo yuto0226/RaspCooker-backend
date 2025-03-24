@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import os
 from datetime import datetime, timezone, timedelta
+from functools import wraps
 from flask import Blueprint, request, jsonify
 import jwt
 
@@ -21,6 +22,7 @@ secret_key = os.environ.get('SECRET_KEY', 'ttussc')
 
 
 def token_required(f):
+    @wraps(f)
     def valid_jwt_token(*args, **kwargs):
         token = request.headers.get('Authorization')
 
