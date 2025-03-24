@@ -45,3 +45,20 @@ def upload():
 
     file.save(file_path)
     return jsonify({'message': 'File uploaded successfully'})
+
+@blueprint.route('/<file_name>', methods=['DELETE'])
+@token_required
+def remove_file(file_name):
+    file_path = os.path.join(uploads_dir, file_name)
+    
+    if not os.path.exists(file_path):
+        return jsonify({'message': 'File not found'}), 404
+    
+    if not os.path.isfile(file_path):
+        return jsonify({'message': 'The specified path is not a file'}), 400
+    
+    try:
+        os.remove(file_path)
+        return jsonify({'message': 'File deleted successfully'})
+    except Exception as e:
+        return jsonify({'message': f'Error deleting file: {str(e)}'}), 500
