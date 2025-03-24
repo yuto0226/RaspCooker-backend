@@ -80,7 +80,7 @@ GET /task/<uuid>/status
 
 - `uuid`
 - `file_name`
-- `status`
+- `state`
     - `CREATED`
     - `RUNABLE`
     - `RUNNING`
@@ -90,5 +90,4 @@ GET /task/<uuid>/status
 - `stdout`
 - `stderr`
 - `start_time`
-- `end_time`
-- `stop_time`
+- `pause_time`
