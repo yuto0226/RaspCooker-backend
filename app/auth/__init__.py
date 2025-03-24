@@ -28,8 +28,13 @@ def token_required(f):
             return jsonify({'message': 'Token is missing!'}), 401
 
         try:
+            if not token.startswith('Bearer '):
+                return jsonify({'message': 'Invalid token format! Must start with "Bearer "'}), 401
+        
+            token = token.split('Bearer ')[1].strip()
+        
             data = jwt.decode(
-                token.split(" ")[1],
+                token,
                 secret_key,
                 algorithms=["HS256"]
             )
@@ -37,6 +42,8 @@ def token_required(f):
             return jsonify({'message': 'Token expired!'}), 401
         except jwt.InvalidTokenError:
             return jsonify({'message': 'Invalid token!'}), 401
+        except Exception:
+            return jsonify({'message': 'Invalid token format!'}), 401
 
         return f(*args, **kwargs)
     return valid_jwt_token
