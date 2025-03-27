@@ -8,7 +8,7 @@ from app.auth import blueprint, users, secret_key
 def login():
     data = request.get_json()
     if not data:
-        return jsonify({'message': 'No auth data provided'})
+        return jsonify({'message': 'No auth data provided'}), 400
     username = data.get('username')
     password = data.get('password')
 
