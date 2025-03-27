@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 import app.auth.routes as auth
 import app.file.routes as file
@@ -8,6 +9,7 @@ import app.task.routes as task
 
 def create_app():
     app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     app.register_blueprint(auth.blueprint, url_prefix='/auth')
     app.register_blueprint(file.blueprint, url_prefix='/file')
